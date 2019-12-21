@@ -1,11 +1,6 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[2]:
-
-
 import csv
 import numpy as np
+import matplotlib.pyplot as plt
 
 def data_reader(file_name='white_dwarf_data.csv'):
     ### Reads the file and returns columns as sorted arrays ###
@@ -22,33 +17,36 @@ def data_reader(file_name='white_dwarf_data.csv'):
                 star_masses.append(float(row[2]))
                 line_count += 1
                 
-    star_masses = np.sort(np.array(star_masses))
-    star_surface_g = np.sort(np.array(star_surface_g))
+    star_masses = np.array(star_masses)
+    star_surface_g = np.array(star_surface_g)
     
 
-    return star_id,star_masses,star_surface_g
-            
-def plot_m_vs_R(M,R):
-    #constants
+    return star_masses,star_surface_g
+
+def scaler(M,logg):
+    ####takes mass in solar mass and log of g, return scaled mass and radius ####
+    ####in solar mass and earth radii####
+    #constants#
     solar_mass = 1.988e30 #kg
     G = 6.67408e-11
     earth_radius = 6.371e6 #m
-    
-    star,mass,logg = data_reader()
+
     g = (10**logg)*(10**(-2)) # in SI units
-    mass = mass * solar_mass # kg
+    mass = M * solar_mass # mass in kg
     R = np.sqrt(G*mass/g) #m
-    
-    plt.xlabel("Mass of the stars(solar_mass)")
-    plt.ylabel("Radius of the stars(earth radii)")
-    plt.title("Mass vs Radius for WDs")
-    
-    figure = plt.plot(mass/solar_mass,R/earth_radius,'o')
-    return figure
+    R = R/earth_radius
+    return M,R
 
-
-# In[ ]:
-
-
-
-
+def low_mass_radius(M,R,max_mass):
+    #### takes arrays M and R returns the mass array M_new with smaller than max_mass ####
+    #### and corresponding R_new arrays ####
+    M_new = []
+    R_new = []
+    for i in range(len(M)):
+        if (M[i] <= max_mass):
+            M_new.append(M[i])
+            R_new.append(R[i])
+    R_new = np.array(R_new)
+    M_new = np.array(M_new)
+    return M_new,R_new
+        
