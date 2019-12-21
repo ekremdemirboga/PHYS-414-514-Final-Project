@@ -22,7 +22,7 @@ def solve_chan(D,rho_c,limit=5,met = 'LSODA'):
     yinit = [1,0]
     
     sol = solve_ivp(lambda t, y: f(t, y),[tspan[0], tspan[-1]], yinit,method=met,t_eval=tspan)
-    surface = 1/(y_c**2)
+    surface = 1/(y_c)
     return sol,surface
 
 
