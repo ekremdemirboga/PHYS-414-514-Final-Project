@@ -1,6 +1,6 @@
 <<<<<<< HEAD
 # PHYS 414/514 Final Project Ekrem Demirboga
 
-=======
-# Ekrem Demirboga, Final Project for PHYS414/514
->>>>>>> 1e08034a1c46cb11644a96a20ed05c524dfaf309
+For each part run the .py folder with the name of the part (Newton.py,Eintein.py,Beyond_Einstein.py) to see all figures. 
+Some functions are not included on the main .py files such as Theoratical_Values.py
+Which only used for calculating theoratical values for the report. 
