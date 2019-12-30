@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[3]:
+# In[31]:
 
 
 import numpy as np
@@ -17,8 +17,8 @@ def chandrasekhar_mass():
     M,R = F.scaler(M,logg)
 
     D = 1830000000 #found
-    rho_c = [1e8, 1e9, 1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19, 1e24, 1e25, 1e26,1e27]
-
+    
+    rho_c = np.linspace(1e20,1e22)
     ### CONSTANTS(SI) ###
     K = 3097671.1345466143 #found before
     G = 6.67408e-11
@@ -31,7 +31,9 @@ def chandrasekhar_mass():
     Mass = 0
     R_new = [] ## for storing new radius and mass
     M_new = []
+    convergence = []
     C = 5.165215436316856e+21 #found
+    counter = 0
     for rho in rho_c:
         ### solve the chandrasekhar for given rho and D ###
         sol,surface = ch.solve_chan(D,rho,limit=8.2,met='RK45')
@@ -54,10 +56,14 @@ def chandrasekhar_mass():
         ## add them to array
         R_new.append(Radius)
         M_new.append(Mass)
+        if (counter >0):
+            convergence.append(M_new[-1]-M_new[-2])
+        counter =+ 1
     R_new = np.array(R_new)
     M_new = np.array(M_new)
+    convergence = np.array(convergence)
     fig, axis = plt.subplots(figsize = (9,5))
-    plt.plot(R_new,M_new,'o')
+    plt.plot(R_new,M_new,'r--',R_new,M_new,'o')
     plt.title("mass-radius")
     plt.xlabel("Radius(earth radius)")
     plt.ylabel("Mass(solar mass)")
@@ -65,10 +71,8 @@ def chandrasekhar_mass():
     print("and corresponding masses: ",M_new)
     print("difference between two last mass values: ", M_new[-1]-M_new[-2])
     print("Chandrasekhar Mass is : ",M_new[-1],"(in solar mass)")
-
-
-# In[ ]:
-
-
-
+    plt.figure()
+    fig, axis = plt.subplots(figsize = (9,5))
+    plt.title("Convergence")
+    plt.plot(convergence,'o')
 
