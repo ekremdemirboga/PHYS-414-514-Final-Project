@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[9]:
+# In[7]:
 
 
 import numpy as np
@@ -12,18 +12,16 @@ import tov_solver as tov
 from scipy import interpolate
 
 
-def wave_equation():
+def wave_equation(rho_c):
     
     def M(x):
         ## interpolation of M(r) from TOV solution
-        rho_c = 1e-3
         sol = tov.TOV_solver(rho_c)
         r = np.linspace(0,sol.t[-1],len(sol.y[0]))
         Mr = interpolate.interp1d(r, sol.y[0])
         return Mr(x)
     def v(x):
         ## interpolation of v(r) from TOV solution
-        rho_c = 1e-3
         sol = tov.TOV_solver(rho_c)
         r = np.linspace(0,sol.t[-1],len(sol.y[0]))
         vr = interpolate.interp1d(r, sol.y[1])
@@ -31,7 +29,6 @@ def wave_equation():
 
     def func(r):
         ## function f(r) in the wave equation
-        rho_c = 1e-3
         sol = tov.TOV_solver(rho_c)
         return np.exp(M(r)/2)*(1 - 2*v(r)/r)**(1/2)
 
@@ -43,8 +40,6 @@ def wave_equation():
         ## inital condition for the wave
         return -2*1e-3*np.exp(-r**2/2)*r
 
-
-    rho_c = 1e-3
     sol = tov.TOV_solver(rho_c)
     c = 1 #speed of light
     N = 300 # mesh element number
@@ -91,21 +86,16 @@ def wave_equation():
     
     psi = np.zeros((N,N))
     psi[:,0] = 1e-3
-    
-    #euler method to integrate Psi.
     for l in range(N-1):
         for n in range(T):
             psi[n,l+1] = psi[n,l] + dr*Psi[n,l+1]
-            
-    
-    
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     X, Y = np.meshgrid(r[2:], t[0:T:20])
     Z = psi[0:T:20,2:]
     ax.set_xlabel('r')
     ax.set_ylabel('time')
-    ax.set_zlabel('phi')
+    ax.set_zlabel('Psi')
     surf = ax.scatter3D(X, Y, Z, cmap='viridis')
-    ax.set_title('solution for phi');       
+    ax.set_title('wave eq');       
 
