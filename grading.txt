@@ -1,0 +1,13 @@
+- too many significant figures in K_* n_* etc 
+
+- chandrasekhar WD equation is not really needed, but nice aside.
+
+- beyond einstein is missing parts. you don't really sow your time evolution.
+it is not clear what you mean by discretizing using leapfrog and evolving using
+implicit euler.
+
+- style: you put different tasks in different functions and files, nice modularity.
+you could do some more commenting. always explain what a function does when you
+define it, even if briefly.
+
+- grade: 35/40
